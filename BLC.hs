@@ -1,8 +1,9 @@
 module BLC (
-    LambdaVar,
-    LambdaBodyElement,
-    LambdaBody,
-    LambdaFunc,
+    LambdaVar (LambdaVar),
+    LambdaBodyElement (LambdaBodyVar, LambdaBodyFunc, LambdaBodyNested),
+    LambdaBody (LambdaBody),
+    LambdaFunc (LambdaFunc),
+    eval
 ) where
 
 import qualified Data.Set as Set
@@ -116,7 +117,7 @@ applye (LambdaFunc v1 (LambdaBody b1)) e = LambdaBody ((map (subse eNew v1)) b1)
         eNew = replaceVarse (varsf (LambdaFunc v1 (LambdaBody b1))) e
 
 
--- evaluation
+-- evaluate lambda function body
 
 evalb :: LambdaBody -> LambdaBody
 evalb (LambdaBody []) = LambdaBody []
@@ -130,6 +131,10 @@ evalb (LambdaBody (LambdaBodyNested b:es))
             len (LambdaBody es) = length es
             fst (LambdaBody (e:es)) = e
 evalb (LambdaBody es) = LambdaBody es
+
+-- exported evaluation function
+
+eval = evalb
 
 -- instances
 
