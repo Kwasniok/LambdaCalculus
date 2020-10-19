@@ -15,12 +15,6 @@ data LambdaFunc = LambdaFunc LambdaVar LambdaBody
 
 -- expression for variable substitution
 
-subsf :: LambdaFunc -> LambdaVar -> LambdaBodyElement -> LambdaBodyElement
-subsf f v1 (LambdaBodyVar v2) = if (v1 == v2) then (LambdaBodyFunc f) else (LambdaBodyVar v2)
-subsf f v1 (LambdaBodyFunc (LambdaFunc v2 (LambdaBody b2))) = LambdaBodyFunc (LambdaFunc v2 (LambdaBody (map (subsf f v1) b2)))
-subsf f v1 (LambdaBodyNested (LambdaBody es2)) =  LambdaBodyNested (LambdaBody (map (subsf f v1) es2))
-
-
 subse :: LambdaBodyElement -> LambdaVar -> LambdaBodyElement -> LambdaBodyElement
 subse e v1 (LambdaBodyVar v2) = if (v1 == v2) then e else (LambdaBodyVar v2)
 subse e v1 (LambdaBodyFunc (LambdaFunc v2 (LambdaBody b2))) = LambdaBodyFunc (LambdaFunc v2 (LambdaBody (map (subse e v1) b2)))
@@ -80,13 +74,6 @@ replacementVars = [LambdaVar ("x" ++ (show i)) | i <- [1..]]
 
 -- find new varibles which are not allready in use
 
--- ... just one
-findReplacementVar :: Set.Set LambdaVar -> LambdaVar
-findReplacementVar varsInUse = f replacementVars
-    where
-        f (rv:rvs) = if (Set.member rv varsInUse) then f rvs else rv
-
--- ... multiple at one
 findReplacementVars :: Set.Set LambdaVar -> Int -> [LambdaVar]
 findReplacementVars varsInUse n = f replacementVars []
     where
@@ -99,22 +86,8 @@ findReplacementVars varsInUse n = f replacementVars []
                            )
 
 
--- replace variables in a lambda function to avoid overlap with variables allready in use
+-- replace variables in a lambda body element to avoid overlap with variables allready in use
 
-replaceVarsf :: Set.Set LambdaVar -> LambdaFunc -> LambdaFunc
-replaceVarsf varsInUse f = (applyAll ops) f
-    where
-        boundVarsOld :: Set.Set LambdaVar
-        boundVarsOld = Set.filter (\v -> Set.member v varsInUse) (boundVarsf f)
-        boundVarsNew :: [LambdaVar]
-        boundVarsNew = findReplacementVars varsInUse (length boundVarsOld)
-        h (x,y) = subsVarf x y
-        ops :: [LambdaFunc -> LambdaFunc]
-        ops = map h (zip (Set.toList boundVarsOld) boundVarsNew)
-        applyAll :: [LambdaFunc -> LambdaFunc] -> (LambdaFunc -> LambdaFunc)
-        applyAll fs = foldl (.) id fs
-
--- ... in lambda body element ...
 replaceVarse :: Set.Set LambdaVar -> LambdaBodyElement -> LambdaBodyElement
 replaceVarse varsInUse e = (applyAll ops) e
     where
@@ -128,13 +101,8 @@ replaceVarse varsInUse e = (applyAll ops) e
         applyAll :: [LambdaBodyElement -> LambdaBodyElement] -> (LambdaBodyElement -> LambdaBodyElement)
         applyAll fs = foldl (.) id fs
 
--- apply function to expression
 
-applyf :: LambdaFunc -> LambdaFunc -> LambdaBody
-applyf (LambdaFunc v1 (LambdaBody b1)) f = LambdaBody ((map (subsf fNew v1)) b1)
-    where
-        fNew = replaceVarsf (varsf (LambdaFunc v1 (LambdaBody b1))) f
-
+-- apply function to lambda body element
 
 applye :: LambdaFunc -> LambdaBodyElement -> LambdaBody
 applye (LambdaFunc v1 (LambdaBody b1)) e = LambdaBody ((map (subse eNew v1)) b1)
