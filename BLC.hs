@@ -40,9 +40,11 @@ subsVarf vOld vNew (LambdaFunc v b) = LambdaFunc (subsVarv vOld vNew v) (subsVar
 
 -- set of variables used in an expression
 
+varsv :: LambdaVar -> Set.Set LambdaVar
+varsv v = Set.singleton v
 
 varse :: LambdaBodyElement -> Set.Set LambdaVar
-varse (LambdaBodyVar v) = Set.singleton v
+varse (LambdaBodyVar v) = varsv v
 varse (LambdaBodyFunc f) = varsf f
 varse (LambdaBodyNested b) = varsb b
 
@@ -55,8 +57,11 @@ varsf (LambdaFunc v b) = Set.union (Set.singleton v) (varsb b)
 
 -- set of bound variables used in an expression
 
+boundVarsv :: LambdaVar -> Set.Set LambdaVar
+boundVarsv v = Set.empty
+
 boundVarse :: LambdaBodyElement -> Set.Set LambdaVar
-boundVarse (LambdaBodyVar v) = Set.empty
+boundVarse (LambdaBodyVar v) = boundVarsv v
 boundVarse (LambdaBodyFunc f) = boundVarsf f
 boundVarse (LambdaBodyNested b) = boundVarsb b
 
