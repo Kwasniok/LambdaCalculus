@@ -23,47 +23,48 @@ subse e v1 (LambdaBodyNested (LambdaBody es2)) =  LambdaBodyNested (LambdaBody (
 
 -- variable for variable substitution
 
-subsVarf :: LambdaVar -> LambdaVar -> LambdaFunc -> LambdaFunc
-subsVarf vOld vNew (LambdaFunc v b) = LambdaFunc (subsVarv vOld vNew v) (subsVarb vOld vNew b)
-
-subsVarb :: LambdaVar -> LambdaVar -> LambdaBody -> LambdaBody
-subsVarb vOld vNew (LambdaBody es) = LambdaBody (map (subsVare vOld vNew) es)
+subsVarv :: LambdaVar -> LambdaVar -> LambdaVar -> LambdaVar
+subsVarv vOld vNew v = if (v == vOld) then vNew else v
 
 subsVare :: LambdaVar -> LambdaVar -> LambdaBodyElement -> LambdaBodyElement
 subsVare vOld vNew (LambdaBodyVar v) = LambdaBodyVar (subsVarv vOld vNew v)
 subsVare vOld vNew (LambdaBodyFunc f) = LambdaBodyFunc (subsVarf vOld vNew f)
 subsVare vOld vNew (LambdaBodyNested b) = LambdaBodyNested (subsVarb vOld vNew b)
 
-subsVarv :: LambdaVar -> LambdaVar -> LambdaVar -> LambdaVar
-subsVarv vOld vNew v = if (v == vOld) then vNew else v
+subsVarb :: LambdaVar -> LambdaVar -> LambdaBody -> LambdaBody
+subsVarb vOld vNew (LambdaBody es) = LambdaBody (map (subsVare vOld vNew) es)
+
+subsVarf :: LambdaVar -> LambdaVar -> LambdaFunc -> LambdaFunc
+subsVarf vOld vNew (LambdaFunc v b) = LambdaFunc (subsVarv vOld vNew v) (subsVarb vOld vNew b)
 
 
 -- set of variables used in an expression
 
-varsf :: LambdaFunc -> Set.Set LambdaVar
-varsf (LambdaFunc v b) = Set.union (Set.singleton v) (varsb b)
-
-varsb :: LambdaBody -> Set.Set LambdaVar
-varsb (LambdaBody es)  = foldl Set.union Set.empty ((map varse) es)
 
 varse :: LambdaBodyElement -> Set.Set LambdaVar
 varse (LambdaBodyVar v) = Set.singleton v
 varse (LambdaBodyFunc f) = varsf f
 varse (LambdaBodyNested b) = varsb b
 
+varsb :: LambdaBody -> Set.Set LambdaVar
+varsb (LambdaBody es)  = foldl Set.union Set.empty ((map varse) es)
+
+varsf :: LambdaFunc -> Set.Set LambdaVar
+varsf (LambdaFunc v b) = Set.union (Set.singleton v) (varsb b)
+
 
 -- set of bound variables used in an expression
-
-boundVarsf :: LambdaFunc -> Set.Set LambdaVar
-boundVarsf (LambdaFunc v b) = Set.union (Set.singleton v) (boundVarsb b)
-
-boundVarsb :: LambdaBody -> Set.Set LambdaVar
-boundVarsb (LambdaBody es)  = foldl Set.union Set.empty ((map boundVarse) es)
 
 boundVarse :: LambdaBodyElement -> Set.Set LambdaVar
 boundVarse (LambdaBodyVar v) = Set.empty
 boundVarse (LambdaBodyFunc f) = boundVarsf f
 boundVarse (LambdaBodyNested b) = boundVarsb b
+
+boundVarsb :: LambdaBody -> Set.Set LambdaVar
+boundVarsb (LambdaBody es)  = foldl Set.union Set.empty ((map boundVarse) es)
+
+boundVarsf :: LambdaFunc -> Set.Set LambdaVar
+boundVarsf (LambdaFunc v b) = Set.union (Set.singleton v) (boundVarsb b)
 
 
 -- infinite supply of replacement of variables
