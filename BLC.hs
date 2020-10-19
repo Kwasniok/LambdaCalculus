@@ -159,33 +159,3 @@ instance Show LambdaBody where
 instance Show LambdaFunc where
     show (LambdaFunc var body) = "\\" ++ (show var) ++ ". " ++ (show body)
 
-
--- examples
-
-a = LambdaVar "a"
-b = LambdaVar "b"
-c = LambdaVar "c"
-d = LambdaVar "d"
-x = LambdaVar "x"
-y = LambdaVar "y"
-z = LambdaVar "z"
-fid = LambdaFunc x (LambdaBody [LambdaBodyVar x])
-f1 = LambdaFunc x (LambdaBody [LambdaBodyVar x])
-f2 = LambdaFunc x (LambdaBody [LambdaBodyNested (LambdaBody [LambdaBodyVar x])])
-f3 = LambdaFunc x (LambdaBody [LambdaBodyVar x, LambdaBodyVar y])
-f4 = LambdaFunc x (LambdaBody [LambdaBodyVar x, LambdaBodyVar x])
-f5 = LambdaFunc x (LambdaBody [LambdaBodyVar x, LambdaBodyVar x, LambdaBodyVar x])
-b1 = (LambdaBody [LambdaBodyFunc f1, LambdaBodyFunc f1, LambdaBodyFunc f1])
-b2 = (LambdaBody [LambdaBodyFunc f4, LambdaBodyFunc f4, LambdaBodyFunc f4])
-b3 = (LambdaBody [LambdaBodyFunc f5, LambdaBodyFunc f5, LambdaBodyFunc f5])
-
-fTrue = LambdaFunc x (LambdaBody [LambdaBodyFunc (LambdaFunc y (LambdaBody [LambdaBodyVar x, LambdaBodyVar y]))])
-fFalse = LambdaFunc x (LambdaBody [LambdaBodyFunc (LambdaFunc y (LambdaBody [LambdaBodyVar y, LambdaBodyVar x]))])
-fNot = fFalse
-fIf = LambdaFunc x (LambdaBody [LambdaBodyFunc (
-      LambdaFunc y (LambdaBody [LambdaBodyFunc (
-      LambdaFunc z (LambdaBody [LambdaBodyVar x, LambdaBodyVar y, LambdaBodyVar z]))]))])
-
-bIfTrue = LambdaBody [LambdaBodyFunc fIf, LambdaBodyFunc fTrue]
-bIfTrueTrueFalse = LambdaBody [LambdaBodyFunc fIf, LambdaBodyFunc fTrue, LambdaBodyFunc fTrue, LambdaBodyFunc fFalse]
-
