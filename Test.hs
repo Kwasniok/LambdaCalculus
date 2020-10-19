@@ -9,26 +9,29 @@ parse = readP_to_S
 -- types
 -- Int
 data Designator = Designator String
-data Expression = ExpressionDesignator Designator | ExpressionFunction Designator Expression | ExpressionList [Expression]
-
+data Term = TermDesignator Designator | TermFunction Designator Expression
+data Expression = ExpressionTerm Term | ExpressionList [Expression]
 
 -- Show types
 
 instance Show Designator where
     show (Designator s) = s
 
+instance Show Term where
+    show (TermDesignator d) = show d
+    show (TermFunction d e) = "(\\" ++ (show d) ++ ". " ++ (show e) ++ ")"
+
 instance Show Expression where
-    show (ExpressionDesignator d) = show d
-    show (ExpressionFunction d e) = "(\\" ++ (show d) ++ ". " ++ (show e) ++ ")"
+    show (ExpressionTerm t) = show t
     show (ExpressionList es) = "(" ++ (intercalate " " (map show es) ) ++")"
 
 
 -- composition
 
-takeSnd :: forall a. forall b. ReadP a -> ReadP b -> ReadP b
+takeSnd :: ReadP a -> ReadP b -> ReadP b
 takeSnd f g = do f; x <- g; return x
 
-interlaced1 :: forall a. forall b. ReadP a -> ReadP b -> ReadP [a]
+interlaced1 :: ReadP a -> ReadP b -> ReadP [a]
 interlaced1 f g = do e <- f; es <- many (takeSnd g f); return (e:es)
 
 
@@ -57,18 +60,23 @@ designator = do s <- lowerLetter; ss <- (many lexical); return (Designator (s:ss
 lambdaHead :: ReadP Designator
 lambdaHead = do lambda; whiteSpace; d <- designator; whiteSpace; lambdaSep; return d
 
-expressionDesignator :: ReadP Expression
-expressionDesignator = do d <- designator; return (ExpressionDesignator d)
+termDesignator :: ReadP Term
+termDesignator = do d <- designator; return (TermDesignator d)
 
-expressionFunction :: ReadP Expression
-expressionFunction = do d <- lambdaHead; whiteSpace; e <- expression; return (ExpressionFunction d e)
+termFunction :: ReadP Term
+termFunction = do d <- lambdaHead; whiteSpace; e <- expression; return (TermFunction d e)
+
+term :: ReadP Term
+term = choice [termDesignator, termFunction]
+
+expressionTerm :: ReadP Expression
+expressionTerm = do t <- term; return (ExpressionTerm t)
 
 expressionList :: ReadP Expression
 expressionList = do openParent; whiteSpace; es <- (interlaced1 expression whiteSpace); whiteSpace; closeParent; return (ExpressionList es)
 
 expression :: ReadP Expression
-expression = choice [expressionDesignator, expressionFunction, expressionList]
-
+expression = choice [expressionTerm, expressionList]
 
 word :: ReadP Expression
 word = do whiteSpace; e <- expression; whiteSpace; eof; return e
