@@ -1,28 +1,15 @@
 
-module Test where
+module Parse (
+    designator,
+    term,
+    expression,
+    word,
+    parse,
+    parseWord,
+) where
 
 import Text.ParserCombinators.ReadP
-import Data.List (intercalate)
-
-parse = readP_to_S
-
--- types
-data Designator = Designator String
-data Term = TermDesignator Designator | TermFunction Designator Expression
-data Expression = ExpressionTerm Term | ExpressionList [Expression]
-
--- Show types
-
-instance Show Designator where
-    show (Designator s) = s
-
-instance Show Term where
-    show (TermDesignator d) = show d
-    show (TermFunction d e) = "(\\" ++ (show d) ++ ". " ++ (show e) ++ ")"
-
-instance Show Expression where
-    show (ExpressionTerm t) = show t
-    show (ExpressionList es) = "(" ++ (intercalate " " (map show es) ) ++")"
+import Data
 
 
 -- composition
@@ -34,7 +21,7 @@ interlaced1 :: ReadP a -> ReadP b -> ReadP [a]
 interlaced1 f g = do e <- f; es <- many (takeSnd g f); return (e:es)
 
 
--- grammar sets
+-- strings
 
 whiteSpaceChar = satisfy (\c -> c == ' ' || c == '\t' || c == '\n')
 whiteSpace = many whiteSpaceChar
@@ -48,22 +35,19 @@ openParent = char '('
 closeParent = char ')'
 
 
--- parser
-
-integer :: ReadP Int
-integer = do n <- many1 digit; return (read n)
+-- data
 
 designator :: ReadP Designator
 designator = do s <- lowerLetter; ss <- (many lexical); return (Designator (s:ss))
 
-lambdaHead :: ReadP Designator
-lambdaHead = do lambda; whiteSpace; d <- designator; whiteSpace; lambdaSep; return d
+lambdaDesignator :: ReadP Designator
+lambdaDesignator = do lambda; whiteSpace; d <- designator; whiteSpace; lambdaSep; return d
 
 termDesignator :: ReadP Term
 termDesignator = do d <- designator; return (TermDesignator d)
 
 termFunction :: ReadP Term
-termFunction = do d <- lambdaHead; whiteSpace; e <- expression; return (TermFunction d e)
+termFunction = do d <- lambdaDesignator; whiteSpace; e <- expression; return (TermFunction d e)
 
 term :: ReadP Term
 term = choice [termDesignator, termFunction]
@@ -80,8 +64,16 @@ expression = choice [expressionTerm, expressionList]
 word :: ReadP Expression
 word = do whiteSpace; e <- expression; whiteSpace; eof; return e
 
--- parse word
+-- parse
+
+parse :: ReadP a -> String -> Maybe a
+parse p s = let res = (readP_to_S p s) in if ((length res) == 1 && (snd (res !! 0)) == "" ) then (Just (fst (res !! 0))) else Nothing
 
 parseWord :: String -> Maybe Expression
-parseWord s = let res = (parse word s) in if ((length res) == 1 && (snd (res !! 0)) == "" ) then (Just (fst (res !! 0))) else Nothing
+parseWord s = parse word s
 
+
+-- debug parse
+
+parseAllPossible :: ReadP a -> String -> [a]
+parseAllPossible p s = map (fst) (readP_to_S p s)
