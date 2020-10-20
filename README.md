@@ -5,7 +5,9 @@ A small packages featuring the basic operations of lambda calculus.
 ## Feature List
 - Representation of objects in Lambda Calculus as Data Structures
 - IO of lambda expressions
-- Evaluation of lambda expressions
+
+## Planned Features
+- Evaluation of lambda expressions (#1)
 
 ## Usage
 Start `ghci` from the shell and `:load ` a module.
