@@ -7,7 +7,6 @@ import Data.List (intercalate)
 parse = readP_to_S
 
 -- types
--- Int
 data Designator = Designator String
 data Term = TermDesignator Designator | TermFunction Designator Expression
 data Expression = ExpressionTerm Term | ExpressionList [Expression]
