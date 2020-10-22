@@ -124,7 +124,9 @@ evale (LambdaBodyFunc (LambdaFunc v b)) = LambdaBodyFunc (LambdaFunc v (evalb b)
 evale e = e
 
 evalb :: LambdaBody -> LambdaBody
+-- application
 evalb (LambdaBody (LambdaBodyFunc f1:e2:es)) = LambdaBody (LambdaBodyNested (applye f1 e2) : es)
+-- nested body
 evalb (LambdaBody (LambdaBodyNested b:es))
     | ((len bNew) == 0) = LambdaBody es                                -- remove empty body
     | ((len bNew) == 1) = LambdaBody ((fst bNew) : es)                 -- resolve nesting
@@ -133,6 +135,7 @@ evalb (LambdaBody (LambdaBodyNested b:es))
             bNew = evalb b
             len (LambdaBody es) = length es
             fst (LambdaBody (e:es)) = e
+-- other (unevaluated)
 evalb (LambdaBody es) = LambdaBody (map evale es)
 
 -- exported evaluation function
