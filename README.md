@@ -19,6 +19,7 @@ $ ghci
 ### Modules
 - `Data.hs` contains all data structures representing the lambda calculus and output functions (`show`)
 - `Parse.hs` contains parser function for all data structures
+- `Evaluation.hs` contains functions related to expression evaluation
 
 ### Notation
 The standart notation ~`λx. λy. x y`~ is represented as `\x. (\y. (x y))` with explicit **parentheses around each function body** if more than one term is present and exactly **one parameter per function**.
