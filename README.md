@@ -22,6 +22,7 @@ $ ghci
 
 ### Notation
 The standard notation ~`λx. λy. x y`~ is represented as `\x. (\y. (x y))` with explicit **parentheses around each function body** if more than one term is present and exactly **one parameter per function**.
+Other **term lists** have to be placed **within parentheses** as well: ~`(λx. λy. x y) a b`~ becomes `(\x. (\y. (x y)) a b)`.
 
 ## Examples
 ### Input/Output
