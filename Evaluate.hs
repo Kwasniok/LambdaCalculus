@@ -85,8 +85,11 @@ eval (ExpressionList ((ExpressionTerm (TermFunction d e) : (ExpressionTerm t) : 
         if (length es == 0) then f else ExpressionList (f : es)
 -- remove nesting if single expression
 eval (ExpressionList [e]) = e
--- other
-eval e = e
+eval (ExpressionList es) = ExpressionList (map f es)
+    where
+        f (ExpressionList [e]) = e
+        -- other
+        f e = e
 
 evalTerm :: Term -> Term
 evalTerm (TermDesignator d) = TermDesignator d
