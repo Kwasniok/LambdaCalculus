@@ -5,9 +5,7 @@ A small packages featuring the basic operations of lambda calculus.
 ## Feature List
 - Representation of objects in Lambda Calculus as Data Structures
 - IO of lambda expressions
-
-## Planned Features
-- Evaluation of lambda expressions (#1)
+- Stepwise evaluation of lambda expressions
 
 ## Usage
 Start `ghci` from the shell and `:load ` a module.
@@ -41,6 +39,25 @@ Prelude> :load Parse.hs
 *Parse> show w
 "Just (\a. (\b. (a b)))"
 *Parse>
+```
+
+### Evaluation (Stepwise)
+To perform a single evaluation step use `eval` as in:
+```
+Prelude> :load Evaluate.hs Parse.hs
+*Evaluate> import Evaluate 
+*Evaluate Evaluate> import Parse
+*Evaluate Evaluate Parse> import Data.Maybe
+*Evaluate Evaluate Parse Data.Maybe> w = fromJust $ parse word "(\\x. \\y. (x y) a b)"
+*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 0
+((\x. (\y. (x y))) a b)
+*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 1
+((\y. (a y)) b)
+*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 2
+(a b)
+*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 3
+(a b)
+*Evaluate Evaluate Parse Data.Maybe>
 ```
 
 ## Dependencies
