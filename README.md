@@ -1,9 +1,9 @@
 # Lambda Calculus
 
-A small packages featuring the basic operations of lambda calculus.
+A small package featuring the basic operations of lambda calculus.
 
 ## Feature List
-- Representation of objects in Lambda Calculus as Data Structures
+- Representation of objects in lambda calculus as data structures
 - IO of lambda expressions
 - Validity check of lambda expressions
 - Stepwise evaluation of lambda expressions
