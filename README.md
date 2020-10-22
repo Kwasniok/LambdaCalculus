@@ -1,6 +1,5 @@
 # Lambda Calculus
-
-A small package featuring the basic operations of lambda calculus.
+A small [cabal](https://www.haskell.org/cabal/) package for haskell featuring the basic operations of lambda calculus.
 
 ## Feature List
 - Representation of objects in lambda calculus as data structures
@@ -8,17 +7,20 @@ A small package featuring the basic operations of lambda calculus.
 - Validity check of lambda expressions
 - Stepwise evaluation of lambda expressions
 
-## Usage
-Start `ghci` from the shell and `:load ` a module.
+## Installation
+Installation of this library via [cabal](https://www.haskell.org/cabal/) package manager:
+```
+cabal instal --lib
+```
+This will register the package for [GHC](https://www.haskell.org/ghc/) as well.
 
-```
-$ ghci
-```
+## Usage
+After a succeccfull installation all modules are known to and importable from within GHC/GHCI.
 
 ### Modules
-- `Data.hs` contains all data structures representing the lambda calculus and output functions (`show`)
-- `Parse.hs` contains a parser function for all data structures
-- `Evaluation.hs` contains functions related to expression evaluation
+- `Lambda.Data` contains all data structures representing the lambda calculus and output functions (`show`)
+- `Lambda.Parse` contains a parser function for all data structures
+- `Lambda.Evaluation` contains functions related to expression evaluation
 
 ### Notation
 The standard notation ~`λx. λy. x y`~ is represented as `\x. (\y. (x y))` with explicit **parentheses around each function body** if more than one term is present and exactly **one parameter per function**.
@@ -28,54 +30,53 @@ Other **term lists** have to be placed **within parentheses** as well: ~`(λx. �
 ### Input/Output
 Use `parse` to parse a grammatical data structure like `word` (top level structure):
 ```
-Prelude> :load Parse.hs
-*Parse> parse word "\\a. \\b. (a b)"
+> import Lambda.Parse
+> parse word "\\a. \\b. (a b)"
 Just (\a. (\b. (a b)))
-*Parse>
+>
 ```
 
 Printing is implicit for each line but one can use `show` to turn a grammatical data structure into a string as a in:
 ```
-Prelude> :load Parse.hs
-*Parse> w = parse word "\\a. \\b. (a b)"
-*Parse> show w
+> import Lambda.Parse
+> w = parse word "\\a. \\b. (a b)"
+> show w
 "Just (\a. (\b. (a b)))"
-*Parse>
+>
 ```
 
 ### Check Validity
 To check the validity of a lambda expression use `valid` as in:
 ```
-Prelude> :load Evaluate.hs Parse.hs
-*Evaluate> import Evaluate
-*Evaluate Evaluate> import Parse
-*Evaluate Evaluate Parse> import Data.Maybe
-*Evaluate Evaluate Parse Data.Maybe> w = w = fromJust (parse word "(\\x. \\y. (x y) \\y. (y z))")
-*Evaluate Evaluate Parse Data.Maybe> valid w
+> import Lambda.Parse
+> import Lambda.Evaluate
+> import Data.Maybe
+> w = w = fromJust (parse word "(\\x. \\y. (x y) \\y. (y z))")
+> valid w
 True
-*Evaluate Evaluate Parse Data.Maybe> w = w = fromJust (parse word "(\\x. \\x. (x y) \\y. (y z))")
-*Evaluate Evaluate Parse Data.Maybe> valid w
+> w = w = fromJust (parse word "(\\x. \\x. (x y) \\y. (y z))")
+> valid w
 False
-*Evaluate Evaluate Parse Data.Maybe>
+> 
 ```
 
 ### Evaluation (Stepwise)
 To perform a single evaluation step (for any **valid** lambda expression) use `eval` as in:
 ```
-Prelude> :load Evaluate.hs Parse.hs
-*Evaluate> import Evaluate
-*Evaluate Evaluate> import Parse
-*Evaluate Evaluate Parse> import Data.Maybe
-*Evaluate Evaluate Parse Data.Maybe> w = fromJust $ parse word "(\\x. \\y. (x y) a b)"
-*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 0
+
+> import Lambda.Evaluate
+> import Lambda.Parse
+> import Data.Maybe
+> w = fromJust $ parse word "(\\x. \\y. (x y) a b)"
+> iterate eval w !! 0
 ((\x. (\y. (x y))) a b)
-*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 1
+> iterate eval w !! 1
 ((\y. (a y)) b)
-*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 2
+> iterate eval w !! 2
 (a b)
-*Evaluate Evaluate Parse Data.Maybe> iterate eval w !! 3
+> iterate eval w !! 3
 (a b)
-*Evaluate Evaluate Parse Data.Maybe>
+>
 ```
 
 ## Dependencies

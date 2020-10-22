@@ -1,0 +1,22 @@
+cabal-version:       2.4
+name:                lambda-calculus
+version:             0.1.0.0
+homepage:            https://github.com/Kwasniok/LambdaCalculus
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Jens Kwasniok
+maintainer:          Kwasniok@users.noreply.github.com
+category:            Lambda-Calculus
+extra-source-files:  CHANGELOG.md, README.md
+
+library
+  exposed-modules:     Lambda.Data
+                       Lambda.Parse
+                       Lambda.Evaluate
+  -- other-modules:
+  -- other-extensions:
+  build-depends:       base ^>=4.14.1.0,
+                       containers ^>= 0.6.2.1
+  hs-source-dirs:      lib
+  default-language:    Haskell2010
+
