@@ -133,6 +133,7 @@ evalb (LambdaBody (LambdaBodyNested b:es))
             bNew = evalb b
             len (LambdaBody es) = length es
             fst (LambdaBody (e:es)) = e
+evalb (LambdaBody es) = LambdaBody (map evale es)
 
 -- exported evaluation function
 
