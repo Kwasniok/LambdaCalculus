@@ -21,7 +21,7 @@ $ ghci
 - `Evaluation.hs` contains functions related to expression evaluation
 
 ### Notation
-The standart notation ~`λx. λy. x y`~ is represented as `\x. (\y. (x y))` with explicit **parentheses around each function body** if more than one term is present and exactly **one parameter per function**.
+The standard notation ~`λx. λy. x y`~ is represented as `\x. (\y. (x y))` with explicit **parentheses around each function body** if more than one term is present and exactly **one parameter per function**.
 
 ## Examples
 ### Input/Output
@@ -62,7 +62,7 @@ False
 To perform a single evaluation step (for any **valid** lambda expression) use `eval` as in:
 ```
 Prelude> :load Evaluate.hs Parse.hs
-*Evaluate> import Evaluate 
+*Evaluate> import Evaluate
 *Evaluate Evaluate> import Parse
 *Evaluate Evaluate Parse> import Data.Maybe
 *Evaluate Evaluate Parse Data.Maybe> w = fromJust $ parse word "(\\x. \\y. (x y) a b)"
