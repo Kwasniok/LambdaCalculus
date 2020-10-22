@@ -18,7 +18,7 @@ $ ghci
 
 ### Modules
 - `Data.hs` contains all data structures representing the lambda calculus and output functions (`show`)
-- `Parse.hs` contains parser function for all data structures
+- `Parse.hs` contains a parser function for all data structures
 - `Evaluation.hs` contains functions related to expression evaluation
 
 ### Notation
