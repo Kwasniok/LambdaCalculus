@@ -59,7 +59,7 @@ False
 ```
 
 ### Evaluation (Stepwise)
-To perform a single evaluation step use `eval` as in:
+To perform a single evaluation step (for any **valid** lambda expression) use `eval` as in:
 ```
 Prelude> :load Evaluate.hs Parse.hs
 *Evaluate> import Evaluate 
