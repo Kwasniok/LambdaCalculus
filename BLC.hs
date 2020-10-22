@@ -119,6 +119,10 @@ applye (LambdaFunc v1 (LambdaBody b1)) e = LambdaBody ((map (subse eNew v1)) b1)
 
 -- evaluate lambda function body
 
+evale :: LambdaBodyElement -> LambdaBodyElement
+evale (LambdaBodyFunc (LambdaFunc v b)) = LambdaBodyFunc (LambdaFunc v (evalb b))
+evale e = e
+
 evalb :: LambdaBody -> LambdaBody
 evalb (LambdaBody []) = LambdaBody []
 evalb (LambdaBody (LambdaBodyFunc f1:e2:es)) = LambdaBody (LambdaBodyNested (applye f1 e2) : es)
