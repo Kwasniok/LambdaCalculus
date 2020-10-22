@@ -1,5 +1,5 @@
 
-module Data (
+module Lambda.Data (
     Designator (Designator),
     Term (TermDesignator, TermFunction),
     Expression (ExpressionTerm, ExpressionList),

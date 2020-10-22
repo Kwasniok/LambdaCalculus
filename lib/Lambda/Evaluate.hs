@@ -1,5 +1,5 @@
 
-module Evaluate (
+module Lambda.Evaluate (
     subs,
     replace,
     valid,
@@ -7,7 +7,7 @@ module Evaluate (
 ) where
 
 import qualified Data.Set as Set
-import Data
+import Lambda.Data
 
 -- (naive) substitution
 -- @note: do not substitue bound designators

@@ -1,5 +1,5 @@
 
-module Parse (
+module Lambda.Parse (
     designator,
     term,
     expression,
@@ -9,7 +9,7 @@ module Parse (
 ) where
 
 import Text.ParserCombinators.ReadP
-import Data
+import Lambda.Data
 
 
 -- composition

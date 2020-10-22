@@ -10,7 +10,9 @@ category:            Lambda-Calculus
 extra-source-files:  CHANGELOG.md, README.md
 
 library
-  exposed-modules:     MyLib
+  exposed-modules:     Lambda.Data
+                       Lambda.Parse
+                       Lambda.Evaluate
   -- other-modules:
   -- other-extensions:
   build-depends:       base ^>=4.14.1.0

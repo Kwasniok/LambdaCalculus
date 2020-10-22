@@ -1,8 +1,8 @@
 
 import Data.Maybe
-import Data
-import Parse
-import Evaluate
+import Lambda.Data
+import Lambda.Parse
+import Lambda.Evaluate
 
 neval :: Expression -> Int -> Expression
 neval e n = iterate eval e !! n
