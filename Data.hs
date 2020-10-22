@@ -11,6 +11,17 @@ data Designator = Designator String
 data Term = TermDesignator Designator | TermFunction Designator Expression
 data Expression = ExpressionTerm Term | ExpressionList [Expression]
 
+
+-- instance Eq
+
+instance Eq Designator where
+    (==) (Designator x) (Designator y) = x == y
+
+-- instance Ord
+
+instance Ord Designator where
+    compare (Designator x) (Designator y) = compare x y
+
 --instance Show
 
 instance Show Designator where
