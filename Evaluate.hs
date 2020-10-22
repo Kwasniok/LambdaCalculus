@@ -2,6 +2,7 @@
 module Evaluate (
     subs,
     replace,
+    valid,
     eval,
 ) where
 
@@ -44,6 +45,19 @@ boundDesignatorsTerm :: Term -> Set.Set Designator
 boundDesignatorsTerm (TermDesignator d) = Set.empty
 boundDesignatorsTerm (TermFunction d e) = Set.insert d (boundDesignators e)
 
+
+-- validity (no nested binding of the same designator)
+
+valid :: Expression -> Bool
+valid e = validExpression Set.empty e
+
+validExpression :: Set.Set Designator -> Expression -> Bool
+validExpression bds (ExpressionTerm t) = validTerm bds t
+validExpression bds (ExpressionList es) = foldl (&&) True (map (validExpression bds) es)
+
+validTerm :: Set.Set Designator -> Term -> Bool
+validTerm bds (TermDesignator d) = True
+validTerm bds (TermFunction bd e) = (not (Set.member bd bds)) && (validExpression (Set.insert bd bds) e)
 
 -- replacement designators (infinite supply of unique designaotrs)
 
