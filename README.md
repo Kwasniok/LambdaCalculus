@@ -79,7 +79,6 @@ Prelude> :load Evaluate.hs Parse.hs
 ```
 
 ## Dependencies
-- [ghc](https://www.haskell.org/ghc/) v4.9.0.0 or newer
+- haskell compiler: [ghc](https://www.haskell.org/ghc/) v4.9.0.0 or newer
     - archlinux: [ghc package](https://www.archlinux.org/packages/community/x86_64/ghc/) (may require further packages)
-- haskell packages:
-    - [`base-4.9.0.0`](https://hackage.haskell.org/package/base-4.9.0.0)
+- haskell package manager: [cabal](https://www.haskell.org/cabal/) v2.4 or newer
