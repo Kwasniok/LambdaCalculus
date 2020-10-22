@@ -5,6 +5,7 @@ A small packages featuring the basic operations of lambda calculus.
 ## Feature List
 - Representation of objects in Lambda Calculus as Data Structures
 - IO of lambda expressions
+- Validity check of lambda expressions
 - Stepwise evaluation of lambda expressions
 
 ## Usage
@@ -39,6 +40,22 @@ Prelude> :load Parse.hs
 *Parse> show w
 "Just (\a. (\b. (a b)))"
 *Parse>
+```
+
+### Check Validity
+To check the validity of a lambda expression use `valid` as in:
+```
+Prelude> :load Evaluate.hs Parse.hs
+*Evaluate> import Evaluate
+*Evaluate Evaluate> import Parse
+*Evaluate Evaluate Parse> import Data.Maybe
+*Evaluate Evaluate Parse Data.Maybe> w = w = fromJust (parse word "(\\x. \\y. (x y) \\y. (y z))")
+*Evaluate Evaluate Parse Data.Maybe> valid w
+True
+*Evaluate Evaluate Parse Data.Maybe> w = w = fromJust (parse word "(\\x. \\x. (x y) \\y. (y z))")
+*Evaluate Evaluate Parse Data.Maybe> valid w
+False
+*Evaluate Evaluate Parse Data.Maybe>
 ```
 
 ### Evaluation (Stepwise)
