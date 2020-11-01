@@ -94,16 +94,10 @@ eval :: Expression -> Expression
 -- single term
 eval (ExpressionTerm t) = ExpressionTerm (evalTerm t)
 -- function application
-eval (ExpressionList ((ExpressionTerm (TermFunction d e) : (ExpressionTerm t) : es))) =
-    let f = apply d e t in
-        if (length es == 0) then f else ExpressionList (f : es)
+eval (ExpressionList ((ExpressionTerm (TermFunction d e) : (ExpressionTerm t) : es))) = ExpressionList ((apply d e t) : es)
 -- remove nesting if single expression
 eval (ExpressionList [e]) = e
-eval (ExpressionList es) = ExpressionList (map f es)
-    where
-        f (ExpressionList [e]) = e
-        -- other
-        f e = eval e
+eval (ExpressionList es) = ExpressionList (map eval es)
 
 evalTerm :: Term -> Term
 evalTerm (TermDesignator d) = TermDesignator d
