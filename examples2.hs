@@ -46,6 +46,9 @@ fIf = lambda x [lambda y [lambda z [dToE x, dToE y, dToE z]]]
 fAnd = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE z, dToE a]]]]
 fNand = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE a, dToE z]]]]
 
+fYcomb = lambda y [lambda x [dToE y, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x]]
+fInfrep = lambda y [lambda x [dToE y, dToE x, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x, dToE x]]
+
 eIfTrue = ExpressionList [fIf, fTrue]
 eIfFalse = ExpressionList [fIf, fFalse]
 eIfTrueTrueFalse = ExpressionList [fIf, fTrue, fTrue, fFalse]
