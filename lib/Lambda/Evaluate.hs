@@ -103,7 +103,7 @@ eval (ExpressionList es) = ExpressionList (map f es)
     where
         f (ExpressionList [e]) = e
         -- other
-        f e = e
+        f e = eval e
 
 evalTerm :: Term -> Term
 evalTerm (TermDesignator d) = TermDesignator d
