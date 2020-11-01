@@ -72,9 +72,9 @@ resolveBoundDesignatorOverlap :: Set.Set Designator -> Expression -> Expression
 resolveBoundDesignatorOverlap dsToAvoid e = (foldl (.) id repls) e
     where
         dsOld :: [Designator]
-        dsOld = Set.toList (Set.filter (\d -> Set.member d dsToAvoid) (boundDesignators e))
+        dsOld = Set.toList (Set.intersection dsToAvoid (boundDesignators e))
         dsNew :: [Designator]
-        dsNew = filter (\d -> (not (Set.member d dsToAvoid) || (Set.member d (boundDesignators e)))) replacementDesignators
+        dsNew = filter (\d -> not (Set.member d (Set.union dsToAvoid (boundDesignators e)))) replacementDesignators
         repl :: (Designator, Designator) -> (Expression -> Expression)
         repl (dOld, dNew) = replace dOld dNew
         repls :: [Expression -> Expression]
