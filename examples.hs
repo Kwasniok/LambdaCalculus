@@ -36,6 +36,10 @@ lIf = lambda x [lambda y [lambda z [x, y, z]]]
 lAnd = lambda x [lambda y [lambda z [lambda a [x, y, x, z, a]]]]
 lNand = lambda x [lambda y [lambda z [lambda a [x, y, x, a, z]]]]
 
+lIfTrue = ExpressionList [lIf, lTrue]
+lIfFalse = ExpressionList [lIf, lFalse]
+lIfTrueTrueFalse = ExpressionList [lIf, lTrue, lTrue, lFalse]
+
 -- schoenfield and more
 lI = lambda x [x]
 lK = lambda x [lambda y [x]]
@@ -45,8 +49,4 @@ lT = lambda x [lambda y [lambda z [x, z, y]]]
 lY = lambda y [lambda x [y, x, x], lambda x [y, x, x]]
 
 lInfexpand = lambda y [lambda x [y, x, x, x], lambda x [y, x, x, x]]
-
-lIfTrue = ExpressionList [lIf, lTrue]
-lIfFalse = ExpressionList [lIf, lFalse]
-lIfTrueTrueFalse = ExpressionList [lIf, lTrue, lTrue, lFalse]
 
