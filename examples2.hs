@@ -38,7 +38,14 @@ lIf = lambda x [lambda y [lambda z [dToE x, dToE y, dToE z]]]
 lAnd = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE z, dToE a]]]]
 lNand = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE a, dToE z]]]]
 
-lYcomb = lambda y [lambda x [dToE y, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x]]
+-- schoenfield and more
+lI = lambda x [dToE x]
+lK = lambda x [lambda y [dToE x]]
+lZ = lambda x [lambda y [lambda z [dToE x, ExpressionList[dToE y, dToE z]]]]
+lS = lambda x [lambda y [lambda z [ExpressionList[dToE x, dToE z], ExpressionList [dToE y, dToE z]]]]
+lT = lambda x [lambda y [lambda z [dToE x, dToE z, dToE y]]]
+lY = lambda y [lambda x [dToE y, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x]]
+
 lInfexpand = lambda y [lambda x [dToE y, dToE x, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x, dToE x]]
 
 lIfTrue = ExpressionList [lIf, lTrue]
