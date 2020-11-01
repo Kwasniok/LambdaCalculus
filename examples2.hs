@@ -28,28 +28,27 @@ x = mkD "x"
 y = mkD "y"
 z = mkD "z"
 
-fid = lambda x [dToE x]
-f1 = lambda x [dToE x]
-f2 = lambda x [ExpressionList [dToE x]]
-f3 = lambda x [dToE x, dToE y]
-f4 = lambda x [dToE x, dToE x]
-f5 = lambda x [dToE x, dToE x, dToE x]
+lid = lambda x [dToE x]
+l1 = lambda x [dToE x]
+l2 = lambda x [ExpressionList [dToE x]]
+l3 = lambda x [dToE x, dToE y]
+l4 = lambda x [dToE x, dToE x]
+l5 = lambda x [dToE x, dToE x, dToE x]
+l6 = ExpressionList [l1, l1, l1]
+l7 = ExpressionList [l4, l4, l4]
+l8 = ExpressionList [l5, l5, l5]
 
-e1 = ExpressionList [f1, f1, f1]
-e2 = ExpressionList [f4, f4, f4]
-e3 = ExpressionList [f5, f5, f5]
+lTrue = lambda x [lambda y [dToE x, dToE y]]
+lFalse = lambda x [lambda y [dToE y, dToE x]]
+lNot = lFalse
+lIf = lambda x [lambda y [lambda z [dToE x, dToE y, dToE z]]]
+lAnd = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE z, dToE a]]]]
+lNand = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE a, dToE z]]]]
 
-fTrue = lambda x [lambda y [dToE x, dToE y]]
-fFalse = lambda x [lambda y [dToE y, dToE x]]
-fNot = fFalse
-fIf = lambda x [lambda y [lambda z [dToE x, dToE y, dToE z]]]
-fAnd = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE z, dToE a]]]]
-fNand = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE a, dToE z]]]]
+lYcomb = lambda y [lambda x [dToE y, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x]]
+lInfrep = lambda y [lambda x [dToE y, dToE x, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x, dToE x]]
 
-fYcomb = lambda y [lambda x [dToE y, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x]]
-fInfrep = lambda y [lambda x [dToE y, dToE x, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x, dToE x]]
-
-eIfTrue = ExpressionList [fIf, fTrue]
-eIfFalse = ExpressionList [fIf, fFalse]
-eIfTrueTrueFalse = ExpressionList [fIf, fTrue, fTrue, fFalse]
+lIfTrue = ExpressionList [lIf, lTrue]
+lIfFalse = ExpressionList [lIf, lFalse]
+lIfTrueTrueFalse = ExpressionList [lIf, lTrue, lTrue, lFalse]
 
