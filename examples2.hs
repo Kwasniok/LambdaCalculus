@@ -29,15 +29,8 @@ y = mkD "y"
 z = mkD "z"
 
 lid = lambda x [dToE x]
-l1 = lambda x [dToE x]
-l2 = lambda x [ExpressionList [dToE x]]
-l3 = lambda x [dToE x, dToE y]
-l4 = lambda x [dToE x, dToE x]
-l5 = lambda x [dToE x, dToE x, dToE x]
-l6 = ExpressionList [l1, l1, l1]
-l7 = ExpressionList [l4, l4, l4]
-l8 = ExpressionList [l5, l5, l5]
 
+-- boolean algebra
 lTrue = lambda x [lambda y [dToE x, dToE y]]
 lFalse = lambda x [lambda y [dToE y, dToE x]]
 lNot = lFalse
@@ -46,7 +39,7 @@ lAnd = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE z, d
 lNand = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE a, dToE z]]]]
 
 lYcomb = lambda y [lambda x [dToE y, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x]]
-lInfrep = lambda y [lambda x [dToE y, dToE x, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x, dToE x]]
+lInfexpand = lambda y [lambda x [dToE y, dToE x, dToE x, dToE x], lambda x [dToE y, dToE x, dToE x, dToE x]]
 
 lIfTrue = ExpressionList [lIf, lTrue]
 lIfFalse = ExpressionList [lIf, lFalse]
