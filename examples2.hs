@@ -43,6 +43,8 @@ fTrue = lambda x [lambda y [dToE x, dToE y]]
 fFalse = lambda x [lambda y [dToE y, dToE x]]
 fNot = fFalse
 fIf = lambda x [lambda y [lambda z [dToE x, dToE y, dToE z]]]
+fAnd = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE z, dToE a]]]]
+fNand = lambda x [lambda y [lambda z [lambda a [dToE x, dToE y, dToE x, dToE a, dToE z]]]]
 
 eIfTrue = ExpressionList [fIf, fTrue]
 eIfFalse = ExpressionList [fIf, fFalse]
